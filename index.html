@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>VIDEO</title>
+
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    background: black;
+}
+
+/* START */
+#startContainer {
+    position: fixed;
+    inset: 0;
+}
+#startImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+#pauseIcon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px;
+}
+
+/* VIRUS */
+#virusOverlay {
+    position: fixed;
+    inset: 0;
+    background: black;
+    color: red;
+    font-family: monospace;
+    font-size: 18px;
+    padding: 20px;
+    display: none;
+    z-index: 10000;
+    overflow: hidden;
+}
+
+.blink {
+    font-size: 26px;
+    animation: blink 0.4s infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* POPUP */
+.popup {
+    position: fixed;
+    background: black;
+    border: 3px solid red;
+    color: red;
+    padding: 40px;
+    z-index: 20000;
+    animation: shake 0.3s infinite;
+}
+
+/* JUMPSCARE */
+.jumpscare {
+    position: fixed;
+    width: 20vw;
+    height: 20vh;
+    z-index: 999999;
+    pointer-events: none;
+}
+.jumpscare img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* FLASH */
+.flash {
+    position: fixed;
+    inset: 0;
+    background: red;
+    z-index: 30000;
+    animation: flash 0.4s forwards;
+}
+@keyframes flash {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* SHAKE */
+@keyframes shake {
+    0% { transform: translate(0,0); }
+    25% { transform: translate(-15px,15px); }
+    50% { transform: translate(15px,-15px); }
+    75% { transform: translate(-15px,15px); }
+    100% { transform: translate(0,0); }
+}
+.shake { animation: shake 0.2s infinite; }
+
+/* 🔴 ALERT W ROGU */
+#cornerAlert {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 400px;
+    display: none;
+    z-index: 9999999;
+    animation: shake 1s infinite;
+}
+#cornerAlert img {
+    width: 100%;
+    height: auto;
+}
+</style>
+</head>
+
+<body>
+
+<div id="startContainer">
+    <img id="startImage" src="https://d1bvpoagx8hqbg.cloudfront.net/originals/experience-katowice-poland-magdalena-e1dbe491d2f54e9e7b6771216f6e4a24.jpg">
+    <img id="pauseIcon" src="https://png.pngtree.com/recommend-works/png-clipart/20250507/ourmid/pngtree-a-white-triangle-play-button-icon-background-with-black-png-image_16191758.png">
+</div>
+
+<div id="virusOverlay">
+    <div class="blink">⚠ SYSTEM SECURITY BREACH ⚠</div><br>
+    <div id="virusText"></div>
+</div>
+
+<!-- 🔴 ALERT W ROGU -->
+<div id="cornerAlert">
+    <img src="https://tse4.mm.bing.net/th/id/OIP.ooaOZ232I0WOb4BmoMZvLAHaF6?rs=1&pid=ImgDetMain&o=7&rm=3">
+</div>
+
+<!-- DŹWIĘKI -->
+<audio id="scream" loop src="https://www.orangefreesounds.com/wp-content/uploads/2024/07/Horror-scream-sound-effect.mp3"></audio>
+<audio id="alarm" loop src="https://mp3zvuky.cz/wp-content/uploads/2019/01/sirena.mp3"></audio>
+<audio id="glitch" loop src="https://orangefreesounds.com/wp-content/uploads/2021/03/Glitch-sound-effect.mp3"></audio>
+<audio id="glith" loop src="https://orangefreesounds.com/wp-content/uploads/2023/02/Computer-glitch-sound-effect.mp3"></audio>
+
+<script>
+document.addEventListener("click", () => {
+    document.documentElement.requestFullscreen?.();
+    document.getElementById("startContainer").style.display = "none";
+
+    const virus = document.getElementById("virusOverlay");
+    const virusText = document.getElementById("virusText");
+    const alertBox = document.getElementById("cornerAlert");
+    virus.style.display = "block";
+
+    scream.volume = 1;
+    alarm.volume = 0.7;
+    glitch.volume = 1;
+    glith.volume = 1;
+    scream.play();
+    alarm.play();
+    glitch.play();
+    glith.play();
+
+    const logs = [
+        "Initializing kernel exploit...",
+        "SECURITY KEYS COMPROMISED",
+        "USB DEVICES OVERRIDDEN",
+        "FIREWALL DISABLED",
+        "REMOTE ACCESS GRANTED",
+        "ENCRYPTING FILES...",
+        "!!! CRITICAL FAILURE !!!"
+    ];
+    let l = 0;
+    setInterval(() => {
+        virusText.innerHTML += logs[l % logs.length] + "<br>";
+        virusText.scrollTop = virusText.scrollHeight;
+        l++;
+    }, 200);
+
+    setInterval(() => {
+        const p = document.createElement("div");
+        p.className = "popup";
+        p.innerText = "SECURITY KEY ERROR";
+        p.style.top = Math.random()*80 + "%";
+        p.style.left = Math.random()*80 + "%";
+        document.body.appendChild(p);
+        setTimeout(()=>p.remove(),1200);
+    }, 250);
+
+    setInterval(() => {
+        const f = document.createElement("div");
+        f.className = "flash";
+        document.body.appendChild(f);
+        setTimeout(()=>f.remove(),400);
+    }, 600);
+
+    /* 🔴 ALERT W ROGU – POJAWIA SIĘ JAK POWIADOMIENIE */
+    setInterval(() => {
+        alertBox.style.display = "block";
+        setTimeout(() => {
+            alertBox.style.display = "none";
+        }, 4000);
+    }, 5000);
+
+    const jumpscareImages = [
+        "https://reemans.github.io/heartstopper/assets/jumpscareImage-6b6fee0b.jpg",
+        "https://media.tenor.com/pKILGwscBQMAAAAM/radar-sonar.gif",
+        "https://i.imgur.com/7kQEsHU.png","https://mycomputerworks.com/wp-content/uploads/2023/08/shutterstock_1155819148-min-scaled.jpg"
+    ];
+
+    jumpscareImages.forEach(src => {
+        const box = document.createElement("div");
+        box.className = "jumpscare shake";
+        const img = document.createElement("img");
+        img.src = src;
+        box.appendChild(img);
+        document.body.appendChild(box);
+
+        let x = Math.random()*500, y = Math.random()*300;
+        let vx = Math.random()*6+2, vy = Math.random()*6+2;
+
+        (function move(){
+            x+=vx; y+=vy;
+            if(x<0||x+box.offsetWidth>innerWidth) vx*=-1;
+            if(y<0||y+box.offsetHeight>innerHeight) vy*=-1;
+            box.style.left=x+"px";
+            box.style.top=y+"px";
+            requestAnimationFrame(move);
+        })();
+    });
+
+},{once:true});
+
+function forceFullscreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(()=>{});
+    }
+}
+setInterval(forceFullscreen,300);
+</script>
+
+</body>
+</html>
